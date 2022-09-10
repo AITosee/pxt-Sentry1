@@ -7,7 +7,11 @@
     "files": [
         "main.ts",
         "README.md",
-        "enmu.d.ts"
+        "enmu.d.ts",
+        "_locales/zh-cn/Sentry1-strings.json",
+        "_locales/zh-cn/Sentry1-jsdoc-strings.json",
+        "_locales/zh-tw/Sentry1-strings.json",
+        "_locales/zh-tw/Sentry1-jsdoc-strings.json"
     ],
     "testFiles": [
         "test.ts"
@@ -19,6 +23,5 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "tsprj",
-    "languageRestriction": "javascript-only"
+    "preferredEditor": "tsprj"
 }

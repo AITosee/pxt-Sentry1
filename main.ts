@@ -122,7 +122,7 @@ namespace protocol {
 
 
 //% color="#ff6600" weight=20 icon="\uf085"
-namespace Sentry {
+namespace Sentry1. {
     // sentry_reg
     const kRegDeviceId = 0x01
     const kRegRestart = 0x03
@@ -173,7 +173,7 @@ namespace Sentry {
         }
     }
 
-    class SentryI2CMethod {
+    class Sentry1.I2CMethod {
 
         address: number
 
@@ -268,7 +268,7 @@ namespace Sentry {
         }
     }
 
-    class SentryUartMethod {
+    class Sentry1.UartMethod {
         address: number
 
         private get_error_code(code: number) {
@@ -390,9 +390,9 @@ namespace Sentry {
         }
     }
 
-    class SentryMethod {
+    class Sentry1.Method {
         _address: number;
-        _stream: SentryI2CMethod | SentryUartMethod;
+        _stream: Sentry1.I2CMethod | Sentry1.UartMethod;
         _mode: sentry_mode_e;
 
         img_w = 0;
@@ -410,9 +410,9 @@ namespace Sentry {
             if (this._mode != mode) {
                 this._mode = mode;
                 if (mode == sentry_mode_e.kI2CMode) {
-                    this._stream = new SentryI2CMethod();
+                    this._stream = new Sentry1.I2CMethod();
                 } else {
-                    this._stream = new SentryUartMethod();
+                    this._stream = new Sentry1.UartMethod();
                 }
                 this._stream.address = this._address;
             }
@@ -490,7 +490,7 @@ namespace Sentry {
             return SENTRY_OK
         }
 
-        VisionSetStatus(vision_type: sentry_vision_e, enable: SentryStatus) {
+        VisionSetStatus(vision_type: sentry_vision_e, enable: Sentry1.Status) {
             let err = SENTRY_OK;
             let vision_config1 = 0;
 
@@ -542,7 +542,7 @@ namespace Sentry {
             return this._stream.SetParam(vision_type, param, param_id)
         }
 
-        _SensorLockkReg(lock: SentryStatus) {
+        _SensorLockkReg(lock: Sentry1.Status) {
             let err = SENTRY_OK;
             let status = 0;
 
@@ -562,15 +562,15 @@ namespace Sentry {
 
             let frame = this._stream.Get(kRegFrameCount);
 
-            while (SENTRY_OK != this._SensorLockkReg(SentryStatus.Disable));
+            while (SENTRY_OK != this._SensorLockkReg(Sentry1.Status.Disable));
 
             if (frame == _vision_states[vision_type - 1].frame) return SENTRY_FAIL;
 
-            while (SENTRY_OK != this._SensorLockkReg(SentryStatus.Enable));
+            while (SENTRY_OK != this._SensorLockkReg(Sentry1.Status.Enable));
 
             let err = this._stream.Read(vision_type);
 
-            while (SENTRY_OK != this._SensorLockkReg(SentryStatus.Disable));
+            while (SENTRY_OK != this._SensorLockkReg(Sentry1.Status.Disable));
 
             return err;
         }
@@ -614,5 +614,5 @@ namespace Sentry {
         }
     }
 
-    let pSentry1: SentryMethod = null;
+    let pSentry1.1: Sentry1.Method = null;
 }

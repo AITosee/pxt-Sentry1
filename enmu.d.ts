@@ -62,7 +62,7 @@ declare const enum color_label_e {
     kColorUnkown = 7
 }
 
-declare const enum SentryStatus {
+declare const enum Sentry1.Status {
     //% block="enable"
     Enable = 1,
     //% block="disable"
