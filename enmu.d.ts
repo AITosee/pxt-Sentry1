@@ -1,4 +1,4 @@
-declare const enum sentry_vision_e {
+declare const enum sentry1_vision_e {
     //% block="Color"
     kVisionColor = 1,
     //% block="Blob"
@@ -15,7 +15,7 @@ declare const enum sentry_vision_e {
     kVisionMaxType
 }
 
-declare const enum sentry_mode_e {
+declare const enum sentry1_mode_e {
     //% block="SerialMode"
     kSerialMode = 0,
     //% block="I2CMode"
@@ -69,7 +69,7 @@ declare const enum Sentry1Status {
     Disable = 0,
 }
 
-declare const enum sentry_obj_info_e {
+declare const enum sentry1_obj_info_e {
     //% block="status"
     kStatus = 0,
     //% block="x position"
@@ -90,7 +90,7 @@ declare const enum sentry_obj_info_e {
     kBValue = 8,
 }
 
-declare const enum sentry_gen_info_e {
+declare const enum sentry1_gen_info_e {
     //% block="horizontal"
     kXValue = 1,
     //% block="vertical"
@@ -103,7 +103,7 @@ declare const enum sentry_gen_info_e {
     kLabel
 }
 
-declare const enum sentry_Line_info_e {
+declare const enum sentry1_Line_info_e {
     //% block="X coordinate of end point"
     kXValue = 1,
     //% block="Y coordinate of end point"
@@ -116,7 +116,7 @@ declare const enum sentry_Line_info_e {
     kLabel
 }
 
-declare const enum sentry_qr_info_e {
+declare const enum sentry1_qr_info_e {
     //% block="horizontal"
     kXValue = 1,
     //% block="vertical"
@@ -127,7 +127,7 @@ declare const enum sentry_qr_info_e {
     kHeightValue
 }
 
-declare const enum sentry_color_info_e {
+declare const enum sentry1_color_info_e {
     //% block="red channel"
     kRValue = 6,
     //% block="green channel"
@@ -138,7 +138,7 @@ declare const enum sentry_color_info_e {
     kLabel = 5
 }
 
-declare const enum sentry_addr_e {
+declare const enum sentry1_addr_e {
     //% block="0x60"
     ADDR1 = 0x60,
     //% block="0x61"

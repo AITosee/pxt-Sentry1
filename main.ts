@@ -123,7 +123,7 @@ namespace protocol {
 
 //% color="#ff6600" weight=20 icon="\uf085"
 namespace Sentry1 {
-    // sentry_reg
+    // sentry1_reg
     const kRegDeviceId = 0x01
     const kRegRestart = 0x03
     const kRegSensorConfig1 = 0x04
@@ -136,8 +136,8 @@ namespace Sentry1 {
     const kRegVisionConfig1 = 0x21
     const kRegParamNum = 0x23
     const kRegParamId = 0x24
-    const kRegsentry_object_tNumber = 0x34
-    const kRegsentry_object_tId = 0x35
+    const kRegsentry1_object_tNumber = 0x34
+    const kRegsentry1_object_tId = 0x35
 
     const SENTRY_DEVICE_ID = 0x04
 
@@ -149,7 +149,7 @@ namespace Sentry1 {
     const SENTRY_CHECK_ERROR = 0x04
     const SENTRY_UNKNOWN_PROTOCOL = 0x11
 
-    class sentry_object_t {
+    class sentry1_object_t {
         data1: number
         data2: number
         data3: number
@@ -158,17 +158,17 @@ namespace Sentry1 {
         bytestr: string
     }
 
-    let _vision_states: sentry_vision_state_t[] = [null, null, null, null, null, null, null, null, null, null, null, null];
+    let _vision_states: sentry1_vision_state_t[] = [null, null, null, null, null, null, null, null, null, null, null, null];
 
-    export class sentry_vision_state_t {
+    export class sentry1_vision_state_t {
         frame: number
         detect: number
-        sentry_objects: sentry_object_t[]
+        sentry1_objects: sentry1_object_t[]
 
         constructor() {
-            this.sentry_objects = [];
+            this.sentry1_objects = [];
             for (let i = 0; i < SENTRY_MAX_RESULT; i++) {
-                this.sentry_objects[i] = new sentry_object_t();
+                this.sentry1_objects[i] = new sentry1_object_t();
             }
         }
     }
@@ -213,7 +213,7 @@ namespace Sentry1 {
             return value;
         }
 
-        Read(vision_type: sentry_vision_e): number {
+        Read(vision_type: sentry1_vision_e): number {
             let err = SENTRY_OK;
 
             err = this.Set(kRegVisionId, vision_type);
@@ -221,7 +221,7 @@ namespace Sentry1 {
             if (err) return err;
 
             _vision_states[vision_type - 1].frame = this.Get(kRegFrameCount)
-            _vision_states[vision_type - 1].detect = this.Get(kRegsentry_object_tNumber)
+            _vision_states[vision_type - 1].detect = this.Get(kRegsentry1_object_tNumber)
 
             if (_vision_states[vision_type - 1].detect <= 0) {
                 return SENTRY_OK
@@ -232,20 +232,20 @@ namespace Sentry1 {
             }
 
             for (let i = 0; i < _vision_states[vision_type - 1].detect; i++) {
-                err = this.Set(kRegsentry_object_tId, i + 1);
+                err = this.Set(kRegsentry1_object_tId, i + 1);
                 if (err) return err;
 
-                _vision_states[vision_type - 1].sentry_objects[i].data1 = this.Get_u16(0x80)
-                _vision_states[vision_type - 1].sentry_objects[i].data2 = this.Get_u16(0x82)
-                _vision_states[vision_type - 1].sentry_objects[i].data3 = this.Get_u16(0x84)
-                _vision_states[vision_type - 1].sentry_objects[i].data4 = this.Get_u16(0x86)
-                _vision_states[vision_type - 1].sentry_objects[i].data5 = this.Get_u16(0x88)
+                _vision_states[vision_type - 1].sentry1_objects[i].data1 = this.Get_u16(0x80)
+                _vision_states[vision_type - 1].sentry1_objects[i].data2 = this.Get_u16(0x82)
+                _vision_states[vision_type - 1].sentry1_objects[i].data3 = this.Get_u16(0x84)
+                _vision_states[vision_type - 1].sentry1_objects[i].data4 = this.Get_u16(0x86)
+                _vision_states[vision_type - 1].sentry1_objects[i].data5 = this.Get_u16(0x88)
             }
 
             return SENTRY_OK
         }
 
-        SetParam(vision_id: number, param: sentry_object_t, param_id: number): number {
+        SetParam(vision_id: number, param: sentry1_object_t, param_id: number): number {
             let err = SENTRY_OK
             err = this.Set(kRegVisionId, vision_id)
             if (err) return err;
@@ -327,7 +327,7 @@ namespace Sentry1 {
             return pkg[5];
         }
 
-        Read(vision_type: sentry_vision_e): number {
+        Read(vision_type: sentry1_vision_e): number {
             let pkg: number[] = [this.address, protocol.SENTRY_PROTOC_GET_RESULT, vision_type, 0, 0];
             let err = protocol.writepkg(pkg);
             let value = 0;
@@ -350,11 +350,11 @@ namespace Sentry1 {
                         if (stop_id == 0) return SENTRY_OK;
 
                         for (let i = start_id - 1, j = 0; i < stop_id; i++, j++) {
-                            _vision_states[vision_type - 1].sentry_objects[i].data1 = pkg[10 * j + 9] << 8 | pkg[10 * j + 10];
-                            _vision_states[vision_type - 1].sentry_objects[i].data2 = pkg[10 * j + 11] << 8 | pkg[10 * j + 12];
-                            _vision_states[vision_type - 1].sentry_objects[i].data3 = pkg[10 * j + 13] << 8 | pkg[10 * j + 14];
-                            _vision_states[vision_type - 1].sentry_objects[i].data4 = pkg[10 * j + 15] << 8 | pkg[10 * j + 16];
-                            _vision_states[vision_type - 1].sentry_objects[i].data5 = pkg[10 * j + 17] << 8 | pkg[10 * j + 18];
+                            _vision_states[vision_type - 1].sentry1_objects[i].data1 = pkg[10 * j + 9] << 8 | pkg[10 * j + 10];
+                            _vision_states[vision_type - 1].sentry1_objects[i].data2 = pkg[10 * j + 11] << 8 | pkg[10 * j + 12];
+                            _vision_states[vision_type - 1].sentry1_objects[i].data3 = pkg[10 * j + 13] << 8 | pkg[10 * j + 14];
+                            _vision_states[vision_type - 1].sentry1_objects[i].data4 = pkg[10 * j + 15] << 8 | pkg[10 * j + 16];
+                            _vision_states[vision_type - 1].sentry1_objects[i].data5 = pkg[10 * j + 17] << 8 | pkg[10 * j + 18];
                             _vision_states[vision_type - 1].detect++;
                         }
 
@@ -371,7 +371,7 @@ namespace Sentry1 {
             }
         }
 
-        SetParam(vision_id: number, param: sentry_object_t, param_id: number): number {
+        SetParam(vision_id: number, param: sentry1_object_t, param_id: number): number {
             let pkg: number[] = [this.address, protocol.SENTRY_PROTOC_SET_PARAM, vision_id, param_id, param_id];
 
             pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
@@ -392,27 +392,27 @@ namespace Sentry1 {
 
     class Sentry1Method {
         _address: number;
-        _stream: Sentry1.I2CMethod | Sentry1.UartMethod;
-        _mode: sentry_mode_e;
+        _stream: any;
+        _mode: sentry1_mode_e;
 
         img_w = 0;
         img_h = 0;
         constructor(addr: number) {
             this._address = addr
-            this._mode = sentry_mode_e.kUnknownMode;
+            this._mode = sentry1_mode_e.kUnknownMode;
         }
 
-        Begin(mode: sentry_mode_e): number {
-            if (mode == sentry_mode_e.kUnknownMode) {
-                mode = sentry_mode_e.kI2CMode;
+        Begin(mode: sentry1_mode_e): number {
+            if (mode == sentry1_mode_e.kUnknownMode) {
+                mode = sentry1_mode_e.kI2CMode;
             }
 
             if (this._mode != mode) {
                 this._mode = mode;
-                if (mode == sentry_mode_e.kI2CMode) {
-                    this._stream = new Sentry1.I2CMethod();
+                if (mode == sentry1_mode_e.kI2CMode) {
+                    this._stream = new Sentry1I2CMethod();
                 } else {
-                    this._stream = new Sentry1.UartMethod();
+                    this._stream = new Sentry1UartMethod();
                 }
                 this._stream.address = this._address;
             }
@@ -490,7 +490,7 @@ namespace Sentry1 {
             return SENTRY_OK
         }
 
-        VisionSetStatus(vision_type: sentry_vision_e, enable: Sentry1.Status) {
+        VisionSetStatus(vision_type: sentry1_vision_e, enable: Sentry1Status) {
             let err = SENTRY_OK;
             let vision_config1 = 0;
 
@@ -509,22 +509,22 @@ namespace Sentry1 {
             if (err) return err;
 
             if (enable && _vision_states[vision_type - 1] == null) {
-                _vision_states[vision_type - 1] = new sentry_vision_state_t();
+                _vision_states[vision_type - 1] = new sentry1_vision_state_t();
             }
 
             return SENTRY_OK;
         }
 
-        GetValue(vision_type: sentry_vision_e, obj_info: sentry_obj_info_e, obj_id: number = 1) {
+        GetValue(vision_type: sentry1_vision_e, obj_info: sentry1_obj_info_e, obj_id: number = 1) {
 
-            if (obj_info == sentry_obj_info_e.kStatus) {
+            if (obj_info == sentry1_obj_info_e.kStatus) {
                 while (this.UpdateResult(vision_type));
             }
 
             return this.read(vision_type, obj_info, obj_id)
         }
 
-        SetParamNum(vision_type: sentry_vision_e, max_num: number) {
+        SetParamNum(vision_type: sentry1_vision_e, max_num: number) {
             let err = SENTRY_OK;
 
             err = this._stream.Set(kRegVisionId, vision_type);
@@ -535,7 +535,7 @@ namespace Sentry1 {
             return err;
         }
 
-        SetParam(vision_type: sentry_vision_e, param: sentry_object_t, param_id: number = 1) {
+        SetParam(vision_type: sentry1_vision_e, param: sentry1_object_t, param_id: number = 1) {
             if (param_id < 1 || param_id > SENTRY_MAX_RESULT)
                 return SENTRY_FAIL;
 
@@ -556,8 +556,8 @@ namespace Sentry1 {
             }
         }
 
-        UpdateResult(vision_type: sentry_vision_e) {
-            if (vision_type >= sentry_vision_e.kVisionMaxType)
+        UpdateResult(vision_type: sentry1_vision_e) {
+            if (vision_type >= sentry1_vision_e.kVisionMaxType)
                 return 0;
 
             let frame = this._stream.Get(kRegFrameCount);
@@ -575,44 +575,204 @@ namespace Sentry1 {
             return err;
         }
 
-        private read(vision_type: sentry_vision_e, obj_info: sentry_obj_info_e, obj_id: number = 1) {
+        private read(vision_type: sentry1_vision_e, obj_info: sentry1_obj_info_e, obj_id: number = 1) {
 
             if (obj_id > SENTRY_MAX_RESULT || obj_id < 1)
                 return 0;
 
-            if (null == _vision_states[vision_type - 1] || (vision_type - 1) >= sentry_vision_e.kVisionMaxType)
+            if (null == _vision_states[vision_type - 1] || (vision_type - 1) >= sentry1_vision_e.kVisionMaxType)
                 return 0;
 
             obj_id = obj_id - 1;
 
             switch (obj_info) {
-                case sentry_obj_info_e.kStatus:
+                case sentry1_obj_info_e.kStatus:
                     return _vision_states[vision_type - 1].detect;
-                case sentry_obj_info_e.kXValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data1;
-                case sentry_obj_info_e.kYValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data2;
-                case sentry_obj_info_e.kWidthValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data3;
-                case sentry_obj_info_e.kHeightValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data4;
-                case sentry_obj_info_e.kLabel:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data5;
-                case sentry_obj_info_e.kGValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data1;
-                case sentry_obj_info_e.kRValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data2;
-                case sentry_obj_info_e.kBValue:
-                    return _vision_states[vision_type - 1].sentry_objects[obj_id].data3;
+                case sentry1_obj_info_e.kXValue:
+                    return _vision_states[vision_type - 1].sentry1_objects[obj_id].data1;
+                case sentry1_obj_info_e.kYValue:
+                    return _vision_states[vision_type - 1].sentry1_objects[obj_id].data2;
+                case sentry1_obj_info_e.kWidthValue:
+                    return _vision_states[vision_type - 1].sentry1_objects[obj_id].data3;
+                case sentry1_obj_info_e.kHeightValue:
+                    return _vision_states[vision_type - 1].sentry1_objects[obj_id].data4;
+                case sentry1_obj_info_e.kLabel:
+                    return _vision_states[vision_type - 1].sentry1_objects[obj_id].data5;
+                case sentry1_obj_info_e.kGValue:
+                    return _vision_states[vision_type - 1].sentry1_objects[obj_id].data1;
+                case sentry1_obj_info_e.kRValue:
+                    return _vision_states[vision_type - 1].sentry1_objects[obj_id].data2;
+                case sentry1_obj_info_e.kBValue:
+                    return _vision_states[vision_type - 1].sentry1_objects[obj_id].data3;
                 default:
                     return 0;
             }
         }
 
-        VisionSetDefault(vision_type: sentry_vision_e) {
+        VisionSetDefault(vision_type: sentry1_vision_e) {
             return this._stream.Set(kRegVisionId, vision_type);
         }
     }
 
     let pSentry1: Sentry1Method = null;
+
+    /**
+     * Begin Sentry.
+     */
+    //% blockId=Sentry1_begin block="initialize Sentry mode%mode |addr%addr"
+    //% mode.defl=sentry1_mode_e.kI2CMode
+    //% group="Settings"
+    export function Begin(mode: sentry1_mode_e, addr: sentry1_addr_e) {
+        if (pSentry1 == null) {
+            pSentry1 = new Sentry1Method(addr)
+            while (pSentry1.Begin(mode) != SENTRY_OK);
+        }
+    }
+    /**
+     * Sentry vision enable set.
+    */
+    //% blockId=Sentry1_vision_Set block="set  Sentry %enable|algorithm%vision_type "
+    //% group="Settings"
+    export function VisionSetStatus(status: Sentry1Status, vision_type: sentry1_vision_e) {
+        while (pSentry1.VisionSetStatus(vision_type, status) != SENTRY_OK);
+    }
+
+    /**
+    * set vision prama number.
+    * @param vision_type: vision type.
+    * @param max_num max prama number.
+    */
+    //% blockId=Sentry1_vision_SetParamNum block="set  Sentry algorithm %vision_type|max number %max_num "
+    //% max_num.min=1 max_num.max=25 max_num.defl=1
+    //% group="AlgorithmSettings" advanced=true
+    export function SetParamNum(vision_type: sentry1_vision_e, max_num: number) {
+        while (pSentry1.SetParamNum(vision_type, max_num) != SENTRY_OK);
+    }
+
+    /**
+    * color prama.
+    * @param x ROI centre x.
+    * @param y ROI centre y.
+    * @param w ROI weight.
+    * @param h ROI height.
+    */
+    //% blockId=Sentry1_vision_color_param block="set  Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %param_id"
+    //% param_id.min=1 param_id.max=25 param_id.defl=1
+    //% inlineInputMode=inline
+    //% group="AlgorithmSettings" advanced=true
+    export function SetColorParam(x: number, y: number, w: number, h: number, param_id: number = 1) {
+        let prama = new sentry1_object_t();
+        prama.data1 = x;
+        prama.data2 = y;
+        prama.data3 = w;
+        prama.data4 = h;
+        while (pSentry1.SetParam(sentry1_vision_e.kVisionColor, prama, param_id) != SENTRY_OK);
+    }
+
+    /**
+    * blod prama.
+    * @param w detecte min weight.
+    * @param h detecte min height.
+    * @param l detecte lable.
+    */
+    //% blockId=Sentry1_vision_bold_param block="set  Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %param_id"
+    //% param_id.min=1 param_id.max=25 param_id.defl=1
+    //% inlineInputMode=inline
+    //% group="AlgorithmSettings" advanced=true
+    export function SetBoldParam(w: number, h: number, l: color_label_e, param_id: number = 1) {
+        let prama = new sentry1_object_t();
+        prama.data3 = w;
+        prama.data4 = h;
+        prama.data5 = l;
+        while (pSentry1.SetParam(sentry1_vision_e.kVisionBlob, prama, param_id) != SENTRY_OK);
+    }
+
+    /**
+     * Get vision detected number
+     * @param type vision type
+     */
+    //% blockId=Sentry1_detected block=" Sentry  algorithm %vision_type detected number " color="#2E8B57"
+    //% group="Functions" advanced=false
+    export function Detected(vision_type: sentry1_vision_e): number {
+        return pSentry1.GetValue(vision_type, sentry1_obj_info_e.kStatus)
+    }
+
+    /**
+    * get vision sentry1_object_t data, this function will update vision sentry1_object_t automatically.
+    * @param vision_type: vision type.
+    * @param object_inf:  object information
+    * @param obj_id:  object index
+    */
+    //% blockId=Sentry1_get_value block=" Sentry  algorithm%vision_type| Recognition%object_inf|| index %obj_id " color="#2E8B57"
+    //% inlineInputMode=inline
+    //% expandableArgumentMode="enabled"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
+    //% group="Functions"
+    export function GetValue(vision_type: sentry1_vision_e, object_info: sentry1_gen_info_e, obj_id: number = 1): number {
+        return <number>pSentry1.GetValue(<number>vision_type, <number>object_info, obj_id);
+    }
+
+    /**
+     * Get the result of vision color recognition.
+     * @param obj_info Paramters type
+     * @param obj_id:  object index
+     */
+    //% blockId=Sentry1_get_color_value block=" Sentry  algorithm Color| Recognition%obj_info|| index %obj_id " color="#2E8B57"
+    //% inlineInputMode=inline
+    //% expandableArgumentMode="enabled"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
+    //% group="Functions"
+    export function ColorRcgValue(obj_info: sentry1_color_info_e, obj_id: number = 1): number {
+        return pSentry1.GetValue(sentry1_vision_e.kVisionColor, <number>obj_info, obj_id)
+    }
+
+    /**
+     * Get the result of vision Line value.
+     * @param obj_info Paramters type
+     * @param obj_id:  object index
+     */
+    //% blockId=Sentry1_get_Line_value block=" Sentry  algorithm Line| %obj_info|| index %obj_id " color="#2E8B57"
+    //% inlineInputMode=inline
+    //% expandableArgumentMode="enabled"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
+    //% group="Functions"
+    export function LineValue(obj_info: sentry1_Line_info_e, obj_id: number = 1): number {
+        return pSentry1.GetValue(sentry1_vision_e.kVisionLine, <number>obj_info, obj_id)
+    }
+
+    /**
+     * Detected Color
+     * @param lable Color lable
+     * @param obj_id:  object index
+     */
+    //% blockId=Sentry1_detected_color block=" Sentry  detected Color %lable detected || index %obj_id " color="#2E8B57"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
+    //% group="Functions"
+    export function DetectedColor(lable: color_label_e, obj_id: number = 1): boolean {
+        return (pSentry1.GetValue(sentry1_vision_e.kVisionColor, sentry1_obj_info_e.kLabel, obj_id) == lable)
+    }
+
+    /**
+     * Detected Blob
+     * @param lable Blob lable
+     * @param obj_id:  object index
+     */
+    //% blockId=Sentry1_detected_blob block=" Sentry  detected Blob %lable detected || index %obj_id " color="#2E8B57"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
+    //% group="Functions"
+    export function DetectedBlob(lable: color_label_e, obj_id: number = 1): boolean {
+        return (pSentry1.GetValue(sentry1_vision_e.kVisionBlob, sentry1_obj_info_e.kLabel, obj_id) == lable)
+    }
+
+    /**
+     * Detected Card
+     * @param lable Card lable
+     * @param obj_id:  object index
+     */
+    //% blockId=Sentry1_detected_card block=" Sentry  detected card %lable detected || index %obj_id " color="#2E8B57"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
+    //% group="Functions"
+    export function DetectedCard(lable: card_label_e, obj_id: number = 1): boolean {
+        return (pSentry1.GetValue(sentry1_vision_e.kVisionCard, sentry1_obj_info_e.kLabel, obj_id) == lable)
+    }
 }
