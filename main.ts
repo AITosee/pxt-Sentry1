@@ -139,7 +139,7 @@ namespace Sentry1 {
     const kRegsentry1_object_tNumber = 0x34
     const kRegsentry1_object_tId = 0x35
 
-    const SENTRY_DEVICE_ID = 0x04
+    const SENTRY_DEVICE_ID = 0x05
 
     const SENTRY_MAX_RESULT = 25
 
@@ -184,7 +184,7 @@ namespace Sentry1 {
 
             let ret = pins.i2cWriteBuffer(this.address, buf);
 
-            //console.log("i2cwrite " + this.address.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
+            console.log("i2cwrite " + this.address.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
 
             return ret;
         }
@@ -192,8 +192,9 @@ namespace Sentry1 {
         private i2cread(reg: number) {
             pins.i2cWriteNumber(this.address, reg, NumberFormat.UInt8BE, true);
             let value = pins.i2cReadNumber(this.address, NumberFormat.UInt8BE);
+            value = pins.i2cReadNumber(this.address, NumberFormat.UInt8BE);
 
-            //console.log("i2cread " + this.address.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
+            console.log("i2cread " + this.address.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
 
             return value;
         }
@@ -508,21 +509,18 @@ namespace Sentry1 {
             let err = SENTRY_OK;
             let led_reg_value = 0;
             let led_level = 0;
+            let manual = 0
 
-            [err, led_level] = this._stream.Get(kRegLedLevel)
-            if (err) return err;
-
-            [err, led_reg_value] = this._stream.Get(kRegLed)
-            if (err) return err;
-
+            led_level = this._stream.Get(kRegLedLevel)
             led_level = (led_level & 0xF0) | (level & 0x0F);
             this._stream.Set(kRegLedLevel, led_level)
 
-            let manual = 0
+
             if (detected_color == undetected_color){
                 manual = 1
             }
 
+            led_reg_value = this._stream.Get(kRegLed)
             led_reg_value &= 0xf0
             led_reg_value |= manual&0x01
             led_reg_value |= (detected_color & 0x07) << 1
