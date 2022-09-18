@@ -484,6 +484,58 @@ namespace Sentry1 {
             return err;
         }
 
+        CameraSetAwb(awb: sentry1_camera_white_balance_e) {
+            let camera_reg_value = this._stream.Get(kRegCameraConfig1);
+            let white_balance = (camera_reg_value >> 5) & 0x03
+            if (sentry1_camera_white_balance_e.kLockWhiteBalance == awb) {
+                camera_reg_value &= 0x1f
+                camera_reg_value |= (awb & 0x03) << 5
+                let err = this._stream.Set(kRegCameraConfig1, camera_reg_value);
+                if (err) return err;
+                while ((camera_reg_value >> 7) == 0) {
+                    camera_reg_value = this._stream.Get(kRegCameraConfig1);
+                }
+            }
+            else if (white_balance != awb) {
+                camera_reg_value &= 0x1f
+                camera_reg_value |= (awb & 0x03) << 5
+                return this._stream.Set(kRegCameraConfig1, camera_reg_value);
+            }
+            return SENTRY_OK;
+        }
+
+        LedSetColor(detected_color: sentry1_led_color_e, undetected_color: sentry1_led_color_e, level: number = 1) {
+            let err = SENTRY_OK;
+            let led_reg_value = 0;
+            let led_level = 0;
+
+            [err, led_level] = this._stream.Get(kRegLedLevel)
+            if (err) return err;
+
+            [err, led_reg_value] = this._stream.Get(kRegLed)
+            if (err) return err;
+
+            led_level = (led_level & 0xF0) | (level & 0x0F);
+            this._stream.Set(kRegLedLevel, led_level)
+
+            let manual = 0
+            if (detected_color == undetected_color){
+                manual = 1
+            }
+
+            led_reg_value &= 0xf0
+            led_reg_value |= manual&0x01
+            led_reg_value |= (detected_color & 0x07) << 1
+
+            led_reg_value &= 0x1f
+            led_reg_value |= (undetected_color & 0x07) << 5
+
+            err = this._stream.Set(kRegLed, led_reg_value)
+            if (err) return err;
+
+            return SENTRY_OK
+        }
+
         GetImageShape() {
             this.img_w = this._stream.Get(0x1B) << 8 | this._stream.Get(0x1C);
             this.img_h = this._stream.Get(0x1D) << 8 | this._stream.Get(0x1E);
@@ -635,6 +687,32 @@ namespace Sentry1 {
     //% group="Settings"
     export function VisionSetStatus(status: Sentry1Status, vision_type: sentry1_vision_e) {
         while (pSentry1.VisionSetStatus(vision_type, status) != SENTRY_OK);
+    }
+
+    /**
+    * set led color.
+    * @param id Sentry id
+    * @param led led type.
+    * @param detected_color led color while sensor detected target.
+    * @param undetected_color led color while sensor undetected target.
+    */
+    //% blockId=Sentry_led_set_color block="%id|LED %led|when detected %detected_color|when undetected %undetected_color ||brightness %leval"
+    //% leval.min=0 leval.max=15 leval.defl=1
+    //% weight=200 inlineInputMode=inline
+    //% group="Settings" advanced=true
+    export function LedSetColor(detected_color: sentry1_led_color_e, undetected_color: sentry1_led_color_e, leval: number = 1) {
+        while (pSentry1.LedSetColor(detected_color, undetected_color, leval) != SENTRY_OK);
+    }
+
+    /**
+    * set camera white balance.
+    * @param id Sentry id
+    * @param wb white balance type.
+    */
+    //% blockId=Sentry_camera_set_awb block="%id|white balance%wb"
+    //% group="Settings" advanced=true
+    export function CameraSetAwb(wb: sentry1_camera_white_balance_e) {
+        while (pSentry1.CameraSetAwb(wb) != SENTRY_OK);
     }
 
     /**

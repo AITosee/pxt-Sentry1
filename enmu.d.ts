@@ -34,16 +34,7 @@ declare const enum card_label_e {
     //% block="TurnAround"
     kCardTurnAround = 4,
     //% block="Park"
-    kCardPark = 5,
-    kCardCheck = 11,
-    //% block="Cross"
-    kCardCross = 12,
-    //% block="Circle"
-    kCardCircle = 13,
-    //% block="Square"
-    kCardSquare = 14,
-    //% block="Triangle"
-    kCardTriangle = 15,
+    kCardPark = 5
 }
 declare const enum color_label_e {
     //% block="Black"
@@ -147,4 +138,36 @@ declare const enum sentry1_addr_e {
     ADDR3 = 0x62,
     //% block="0x63"
     ADDR4 = 0x63,
+}
+
+declare const enum sentry1_camera_white_balance_e {
+    //% block="AutoWhiteBalance"
+    kAutoWhiteBalance = 0,
+    //% block="LockWhiteBalance"
+    kLockWhiteBalance = 1,
+    //% block="WhiteLight"
+    kWhiteLight = 2,
+    //% block="YellowLight"
+    kYellowLight = 3,
+    //% block="WhiteBalanceCalibrating"
+    kWhiteBalanceCalibrating = 4,
+}
+
+declare const enum sentry1_led_color_e {
+    //% block="off"
+    kLedClose = 0,
+    //% block="red"
+    kLedRed = 1,
+    //% block="green"
+    kLedGreen = 2,
+    //% block="yellow"
+    kLedYellow = 3,
+    //% block="blue"
+    kLedBlue = 4,
+    //% block="purple"
+    kLedPurple = 5,
+    //% block="cyan"
+    kLedCyan = 6,
+    //% block="white"
+    kLedWhite = 7,
 }
