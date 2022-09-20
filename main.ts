@@ -79,7 +79,6 @@ namespace protocol {
                 if (readbuff.length) {
                     readbuff = pins.createBuffer(0);
                 }
-
             }
             else {
                 basic.pause(5);
@@ -184,17 +183,16 @@ namespace Sentry1 {
 
             let ret = pins.i2cWriteBuffer(this.address, buf);
 
-            console.log("i2cwrite " + this.address.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
+            //console.log("i2cwrite " + this.address.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
 
             return ret;
         }
 
         private i2cread(reg: number) {
-            pins.i2cWriteNumber(this.address, reg, NumberFormat.UInt8BE, true);
-            let value = pins.i2cReadNumber(this.address, NumberFormat.UInt8BE);
-            value = pins.i2cReadNumber(this.address, NumberFormat.UInt8BE);
+            pins.i2cWriteNumber(this.address, reg, NumberFormat.UInt8BE, false);
+            let value = pins.i2cReadNumber(this.address, NumberFormat.UInt8BE ,false);
 
-            console.log("i2cread " + this.address.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
+            //console.log("i2cread " + this.address.toString() + " reg:" + reg.toString() + "\t" + value.toString() + "\n")
 
             return value;
         }
