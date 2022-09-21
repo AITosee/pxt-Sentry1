@@ -66,7 +66,7 @@
     "Sentry1.VisionSetStatus|block": "Sentry1 %enable|算法  %vision_type  ",
     "Sentry1.SetParamNum|block": "設置 Sentry1算法  %type  參數個數  %max_num",
     "Sentry1.SetParam|block": "設置 Sentry1算法  %type|參數  %param  || 索引  %obj_id  ",
-    "Sentry1.SetColorParam|block": "設置 Sentry1.算法 顏色識別 區域中心橫坐標  %x| 縱坐標  %y| 寬度  %w| 高度  %h || 索引  %obj_id  ",
+    "Sentry1.SetColorParam|block": "設置 Sentry1算法 顏色識別 區域中心橫坐標  %x| 縱坐標  %y| 寬度  %w| 高度  %h || 索引  %obj_id  ",
     "Sentry1.SetBoldParam|block": "設置 Sentry1算法 色塊檢測 最小寬度  %w| 高度  %h | 檢測標簽  %l || 索引  %obj_id  ",
     "Sentry1.FaceParam|block": "人臉標簽  %l ",
     "Sentry1.LcdSetMode|block": "設置 Sentry1 LCD 顯示  %on  ",

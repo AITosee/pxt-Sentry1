@@ -24,6 +24,28 @@
 
 ```blocks
 // Initialized Sentry with I2C port
+let target_num = 0
+Sentry1.Begin(sentry1_mode_e.kI2CMode, sentry1_addr_e.ADDR1)
+Sentry1.VisionSetStatus(Sentry1Status.Enable, sentry1_vision_e.kVisionColor)
+Sentry1.SetParamNum(sentry1_vision_e.kVisionColor, 1)
+Sentry1.SetColorParam(120, 120, 50, 50)
+basic.forever(function () {
+    target_num = Sentry1.Detected(sentry1_vision_e.kVisionColor)
+    for (let index = 0; index < target_num; index++) {
+        serial.writeValue("target_num", target_num)
+        serial.writeValue("r", Sentry1.ColorRcgValue(sentry1_color_info_e.kRValue))
+        serial.writeValue("g", Sentry1.ColorRcgValue(sentry1_color_info_e.kRValue))
+        serial.writeValue("b", Sentry1.ColorRcgValue(sentry1_color_info_e.kRValue))
+        serial.writeValue("l", Sentry1.ColorRcgValue(sentry1_color_info_e.kRValue))
+    }
+})
+
+```
+
+* Get Vision result
+
+```blocks
+// Initialized Sentry with I2C port
 let index = 0
 let target_num = 0
 Sentry1.Begin(sentry1_mode_e.kI2CMode, sentry1_addr_e.ADDR1)
