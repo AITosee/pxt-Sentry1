@@ -49,6 +49,7 @@ declare const enum color_label_e {
     kColorBlue = 5,
     //% block="Yellow"
     kColorYellow = 6,
+    //% blockHidden=true
     //% block="Unkown"
     kColorUnkown = 7
 }

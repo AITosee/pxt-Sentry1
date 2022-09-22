@@ -20,8 +20,7 @@
 
 ## 使用方法
 
-* Get Vision result
-
+* 颜色检测算法
 ```blocks
 // Initialized Sentry with I2C port
 let target_num = 0
@@ -42,8 +41,7 @@ basic.forever(function () {
 
 ```
 
-* Get Vision result
-
+* 卡片检测算法
 ```blocks
 // Initialized Sentry with I2C port
 let index = 0
@@ -70,6 +68,53 @@ basic.forever(function () {
 })
 
 ```
+
+* 线段检测算法
+```blocks
+let target_num = 0
+Sentry1.Begin(sentry1_mode_e.kI2CMode, sentry1_addr_e.ADDR1)
+Sentry1.VisionSetStatus(Sentry1Status.Enable, sentry1_vision_e.kVisionLine)
+Sentry1.LedSetColor(sentry1_led_color_e.kLedPurple, sentry1_led_color_e.kLedBlue)
+basic.forever(function () {
+    target_num = Sentry1.Detected(sentry1_vision_e.kVisionLine)
+    for (let index = 0; index < target_num; index++) {
+        serial.writeValue("target_num", target_num)
+        serial.writeValue("start_x", Sentry1.LineValue(sentry1_Line_info_e.kWidthValue))
+        serial.writeValue("start_y", Sentry1.LineValue(sentry1_Line_info_e.kHeightValue))
+        serial.writeValue("end_x", Sentry1.LineValue(sentry1_Line_info_e.kXValue))
+        serial.writeValue("end_y", Sentry1.LineValue(sentry1_Line_info_e.kYValue))
+        serial.writeValue("angle", Sentry1.LineValue(sentry1_Line_info_e.kLabel))
+    }
+})
+```
+
+* 色块检测算法
+```blocks
+let target_num = 0
+Sentry1.Begin(sentry1_mode_e.kI2CMode, sentry1_addr_e.ADDR1)
+Sentry1.VisionSetStatus(Sentry1Status.Enable, sentry1_vision_e.kVisionBlob)
+Sentry1.CameraSetAwb(sentry1_camera_white_balance_e.kAutoWhiteBalance)
+Sentry1.LedSetColor(sentry1_led_color_e.kLedPurple, sentry1_led_color_e.kLedBlue)
+Sentry1.SetParamNum(sentry1_vision_e.kVisionBlob, 1)
+Sentry1.SetBoldParam(20, 20, color_label_e.kColorWhite)
+basic.forever(function () {
+    target_num = Sentry1.Detected(sentry1_vision_e.kVisionBlob)
+    for (let index = 0; index < target_num; index++) {
+        serial.writeValue("target_num", target_num)
+        if (Sentry1.DetectedBlob(color_label_e.kColorWhite)) {
+            serial.writeValue("x", Sentry1.GetValue(sentry1_vision_e.kVisionBlob, sentry1_gen_info_e.kXValue))
+            serial.writeValue("y", Sentry1.GetValue(sentry1_vision_e.kVisionBlob, sentry1_gen_info_e.kYValue))
+            serial.writeValue("w", Sentry1.GetValue(sentry1_vision_e.kVisionBlob, sentry1_gen_info_e.kWidthValue))
+            serial.writeValue("h", Sentry1.GetValue(sentry1_vision_e.kVisionBlob, sentry1_gen_info_e.kHeightValue))
+            serial.writeValue("l", Sentry1.GetValue(sentry1_vision_e.kVisionBlob, sentry1_gen_info_e.kLabel))
+        } else {
+            serial.writeValue("l", Sentry1.GetValue(sentry1_vision_e.kVisionBlob, sentry1_gen_info_e.kLabel))
+        }
+    }
+})
+
+```
+
 #### 元数据（用于搜索、渲染）
 
 * for PXT/microbit
