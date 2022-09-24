@@ -840,4 +840,15 @@ namespace Sentry1 {
     export function DetectedCard(lable: card_label_e, obj_id: number = 1): boolean {
         return (pSentry1.GetValue(sentry1_vision_e.kVisionCard, sentry1_obj_info_e.kLabel, obj_id) == lable)
     }
+    /**
+     * Detected Card
+     * @param lable Card lable
+     * @param obj_id:  object index
+     */
+    //% blockId=Sentry1_detected_ball block=" Sentry  detected ball %lable detected || index %obj_id " color="#2E8B57"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
+    //% group="Functions"
+    export function DetectedBall(lable: sentry1_ball_label_e, obj_id: number = 1): boolean {
+        return (pSentry1.GetValue(sentry1_vision_e.kVisionBall, sentry1_obj_info_e.kLabel, obj_id) == lable)
+    }
 }

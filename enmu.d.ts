@@ -172,3 +172,10 @@ declare const enum sentry1_led_color_e {
     //% block="white"
     kLedWhite = 7,
 }
+
+declare const enum sentry1_ball_label_e {
+    //% block="TableTennis"
+    kBallTableTennis = 1,
+    //% block="Tennis"
+    kBallTennis = 2
+}
