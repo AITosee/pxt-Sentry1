@@ -435,9 +435,6 @@ namespace Sentry1 {
             /* Sensor set default if version is correction. */
             err = this.SensorSetDefault();
             if (err) return err;
-            /* Get sensor image shape. */
-            err = this.GetImageShape();
-            if (err) return err;
 
             return SENTRY_OK;
         }
@@ -529,12 +526,6 @@ namespace Sentry1 {
             err = this._stream.Set(kRegLed, led_reg_value)
             if (err) return err;
 
-            return SENTRY_OK
-        }
-
-        GetImageShape() {
-            this.img_w = this._stream.Get(0x1B) << 8 | this._stream.Get(0x1C);
-            this.img_h = this._stream.Get(0x1D) << 8 | this._stream.Get(0x1E);
             return SENTRY_OK
         }
 
