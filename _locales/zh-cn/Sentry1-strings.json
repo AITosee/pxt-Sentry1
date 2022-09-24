@@ -88,7 +88,7 @@
     "Sentry1.DetectedCard|block": "Sentry1卡片识别算法检测到  %lable || 索引  %obj_id ",
     "Sentry1.Detected20Class|block": "Sentry1 20分类识别算法检测到  %lable || 索引  %obj_id ",
     "Sentry1.|block": "Sentry1",
-    "{id:category}Sentry1.": "Sentry1视觉传感器",
+    "{id:category}Sentry1": "Sentry1视觉传感器",
     "{id:group}Functions": "运行模块",
     "{id:group}Settings": "设置模块",
     "{id:group}AlgorithmSettings": "算法参数设置模块",
