@@ -150,6 +150,7 @@ declare const enum sentry1_camera_white_balance_e {
     kWhiteLight = 2,
     //% block="YellowLight"
     kYellowLight = 3,
+    //% blockHidden=true 
     //% block="WhiteBalanceCalibrating"
     kWhiteBalanceCalibrating = 4,
 }

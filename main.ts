@@ -658,7 +658,7 @@ namespace Sentry1 {
     /**
      * Begin Sentry.
      */
-    //% blockId=Sentry1_begin block="initialize Sentry mode%mode |addr%addr"
+    //% blockId=Sentry1_begin block=" initialize Sentry mode%mode |addr%addr"
     //% mode.defl=sentry1_mode_e.kI2CMode
     //% group="Settings"
     export function Begin(mode: sentry1_mode_e, addr: sentry1_addr_e) {
@@ -670,7 +670,7 @@ namespace Sentry1 {
     /**
      * Sentry vision enable set.
     */
-    //% blockId=Sentry1_vision_Set block="set  Sentry %enable|algorithm%vision_type "
+    //% blockId=Sentry1_vision_Set block=" set Sentry %enable|algorithm%vision_type "
     //% group="Settings"
     export function VisionSetStatus(status: Sentry1Status, vision_type: sentry1_vision_e) {
         while (pSentry1.VisionSetStatus(vision_type, status) != SENTRY_OK);
@@ -683,7 +683,7 @@ namespace Sentry1 {
     * @param detected_color led color while sensor detected target.
     * @param undetected_color led color while sensor undetected target.
     */
-    //% blockId=Sentry_led_set_color block="%id|LED %led|when detected %detected_color|when undetected %undetected_color ||brightness %leval"
+    //% blockId=Sentry_led_set_color block=" set Sentry led when detected %detected_color|when undetected %undetected_color ||brightness %leval"
     //% leval.min=0 leval.max=15 leval.defl=1
     //% weight=200 inlineInputMode=inline
     //% group="Settings" advanced=true
@@ -696,7 +696,7 @@ namespace Sentry1 {
     * @param id Sentry id
     * @param wb white balance type.
     */
-    //% blockId=Sentry_camera_set_awb block="%id|white balance%wb"
+    //% blockId=Sentry_camera_set_awb block=" set Sentry white balance%wb"
     //% group="Settings" advanced=true
     export function CameraSetAwb(wb: sentry1_camera_white_balance_e) {
         while (pSentry1.CameraSetAwb(wb) != SENTRY_OK);
@@ -707,7 +707,7 @@ namespace Sentry1 {
     * @param vision_type: vision type.
     * @param max_num max prama number.
     */
-    //% blockId=Sentry1_vision_SetParamNum block="set  Sentry algorithm %vision_type|max number %max_num "
+    //% blockId=Sentry1_vision_SetParamNum block=" set Sentry algorithm %vision_type|max number %max_num "
     //% max_num.min=1 max_num.max=25 max_num.defl=1
     //% group="AlgorithmSettings" advanced=true
     export function SetParamNum(vision_type: sentry1_vision_e, max_num: number) {
@@ -721,7 +721,7 @@ namespace Sentry1 {
     * @param w ROI weight.
     * @param h ROI height.
     */
-    //% blockId=Sentry1_vision_color_param block="set  Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %param_id"
+    //% blockId=Sentry1_vision_color_param block=" set Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %param_id"
     //% param_id.min=1 param_id.max=25 param_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
@@ -740,7 +740,7 @@ namespace Sentry1 {
     * @param h detecte min height.
     * @param l detecte lable.
     */
-    //% blockId=Sentry1_vision_bold_param block="set  Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %param_id"
+    //% blockId=Sentry1_vision_bold_param block=" set Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %param_id"
     //% param_id.min=1 param_id.max=25 param_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
@@ -756,7 +756,7 @@ namespace Sentry1 {
      * Get vision detected number
      * @param type vision type
      */
-    //% blockId=Sentry1_detected block=" Sentry  algorithm %vision_type detected number " color="#2E8B57"
+    //% blockId=Sentry1_detected block=" Sentry algorithm %vision_type detected number " color="#2E8B57"
     //% group="Functions" advanced=false
     export function Detected(vision_type: sentry1_vision_e): number {
         return pSentry1.GetValue(vision_type, sentry1_obj_info_e.kStatus)
@@ -768,7 +768,7 @@ namespace Sentry1 {
     * @param object_inf:  object information
     * @param obj_id:  object index
     */
-    //% blockId=Sentry1_get_value block=" Sentry  algorithm%vision_type| Recognition%object_inf|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry1_get_value block=" Sentry algorithm%vision_type| Recognition%object_inf|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
