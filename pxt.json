@@ -1,6 +1,6 @@
 {
     "name": "Sentry1",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "",
     "dependencies": {
         "core": "*"
@@ -16,13 +16,6 @@
     ],
     "testFiles": [
         "test.ts"
-    ],
-    "targetVersions": {
-        "target": "5.0.12",
-        "targetId": "microbit"
-    },
-    "supportedTargets": [
-        "microbit"
     ],
     "preferredEditor": "tsprj"
 }

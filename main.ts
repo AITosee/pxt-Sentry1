@@ -244,12 +244,12 @@ namespace Sentry1 {
             return SENTRY_OK
         }
 
-        SetParam(vision_id: number, param: sentry1_object_t, param_id: number): number {
+        SetParam(vision_id: number, param: sentry1_object_t, obj_id: number): number {
             let err = SENTRY_OK
             err = this.Set(kRegVisionId, vision_id)
             if (err) return err;
 
-            err = this.Set(kRegParamId, param_id)
+            err = this.Set(kRegParamId, obj_id)
             if (err) return err;
 
             this.Set(0x70, (param.data1 >> 8) & 0xFF)
@@ -370,8 +370,8 @@ namespace Sentry1 {
             }
         }
 
-        SetParam(vision_id: number, param: sentry1_object_t, param_id: number): number {
-            let pkg: number[] = [this.address, protocol.SENTRY_PROTOC_SET_PARAM, vision_id, param_id, param_id];
+        SetParam(vision_id: number, param: sentry1_object_t, obj_id: number): number {
+            let pkg: number[] = [this.address, protocol.SENTRY_PROTOC_SET_PARAM, vision_id, obj_id, obj_id];
 
             pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
             pkg.push((param.data1 >> 8) & 0xFF); pkg.push(param.data1 & 0xff);
@@ -554,13 +554,13 @@ namespace Sentry1 {
             return SENTRY_OK;
         }
 
-        GetValue(vision_type: sentry1_vision_e, obj_info: sentry1_obj_info_e, obj_id: number = 1) {
+        GetValue(vision_type: sentry1_vision_e, object_info: sentry1_obj_info_e, obj_id: number = 1) {
 
-            if (obj_info == sentry1_obj_info_e.kStatus) {
+            if (object_info == sentry1_obj_info_e.kStatus) {
                 while (this.UpdateResult(vision_type));
             }
 
-            return this.read(vision_type, obj_info, obj_id)
+            return this.read(vision_type, object_info, obj_id)
         }
 
         SetParamNum(vision_type: sentry1_vision_e, max_num: number) {
@@ -574,11 +574,11 @@ namespace Sentry1 {
             return err;
         }
 
-        SetParam(vision_type: sentry1_vision_e, param: sentry1_object_t, param_id: number = 1) {
-            if (param_id < 1 || param_id > SENTRY_MAX_RESULT)
+        SetParam(vision_type: sentry1_vision_e, param: sentry1_object_t, obj_id: number = 1) {
+            if (obj_id < 1 || obj_id > SENTRY_MAX_RESULT)
                 return SENTRY_FAIL;
 
-            return this._stream.SetParam(vision_type, param, param_id)
+            return this._stream.SetParam(vision_type, param, obj_id)
         }
 
         _SensorLockkReg(lock: Sentry1Status) {
@@ -614,7 +614,7 @@ namespace Sentry1 {
             return err;
         }
 
-        private read(vision_type: sentry1_vision_e, obj_info: sentry1_obj_info_e, obj_id: number = 1) {
+        private read(vision_type: sentry1_vision_e, object_info: sentry1_obj_info_e, obj_id: number = 1) {
 
             if (obj_id > SENTRY_MAX_RESULT || obj_id < 1)
                 return 0;
@@ -624,7 +624,7 @@ namespace Sentry1 {
 
             obj_id = obj_id - 1;
 
-            switch (obj_info) {
+            switch (object_info) {
                 case sentry1_obj_info_e.kStatus:
                     return _vision_states[vision_type - 1].detect;
                 case sentry1_obj_info_e.kXValue:
@@ -721,17 +721,17 @@ namespace Sentry1 {
     * @param w ROI weight.
     * @param h ROI height.
     */
-    //% blockId=Sentry1_vision_color_param block=" set Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %param_id"
-    //% param_id.min=1 param_id.max=25 param_id.defl=1
+    //% blockId=Sentry1_vision_color_param block=" set Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %obj_id"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
-    export function SetColorParam(x: number, y: number, w: number, h: number, param_id: number = 1) {
+    export function SetColorParam(x: number, y: number, w: number, h: number, obj_id: number = 1) {
         let prama = new sentry1_object_t();
         prama.data1 = x;
         prama.data2 = y;
         prama.data3 = w;
         prama.data4 = h;
-        while (pSentry1.SetParam(sentry1_vision_e.kVisionColor, prama, param_id) != SENTRY_OK);
+        while (pSentry1.SetParam(sentry1_vision_e.kVisionColor, prama, obj_id) != SENTRY_OK);
     }
 
     /**
@@ -740,16 +740,16 @@ namespace Sentry1 {
     * @param h detecte min height.
     * @param l detecte lable.
     */
-    //% blockId=Sentry1_vision_bold_param block=" set Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %param_id"
-    //% param_id.min=1 param_id.max=25 param_id.defl=1
+    //% blockId=Sentry1_vision_bold_param block=" set Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %obj_id"
+    //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
-    export function SetBoldParam(w: number, h: number, l: color_label_e, param_id: number = 1) {
+    export function SetBoldParam(w: number, h: number, l: color_label_e, obj_id: number = 1) {
         let prama = new sentry1_object_t();
         prama.data3 = w;
         prama.data4 = h;
         prama.data5 = l;
-        while (pSentry1.SetParam(sentry1_vision_e.kVisionBlob, prama, param_id) != SENTRY_OK);
+        while (pSentry1.SetParam(sentry1_vision_e.kVisionBlob, prama, obj_id) != SENTRY_OK);
     }
 
     /**
@@ -765,10 +765,10 @@ namespace Sentry1 {
     /**
     * get vision sentry1_object_t data, this function will update vision sentry1_object_t automatically.
     * @param vision_type: vision type.
-    * @param object_inf:  object information
+    * @param object_info:  object information
     * @param obj_id:  object index
     */
-    //% blockId=Sentry1_get_value block=" Sentry algorithm%vision_type| Recognition%object_inf|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry1_get_value block=" Sentry algorithm%vision_type| Recognition%object_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
@@ -779,30 +779,30 @@ namespace Sentry1 {
 
     /**
      * Get the result of vision color recognition.
-     * @param obj_info Paramters type
+     * @param object_info Paramters type
      * @param obj_id:  object index
      */
-    //% blockId=Sentry1_get_color_value block=" Sentry  algorithm Color| Recognition%obj_info|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry1_get_color_value block=" Sentry  algorithm Color| Recognition%object_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
     //% group="Functions"
-    export function ColorRcgValue(obj_info: sentry1_color_info_e, obj_id: number = 1): number {
-        return pSentry1.GetValue(sentry1_vision_e.kVisionColor, <number>obj_info, obj_id)
+    export function ColorRcgValue(object_info: sentry1_color_info_e, obj_id: number = 1): number {
+        return pSentry1.GetValue(sentry1_vision_e.kVisionColor, <number>object_info, obj_id)
     }
 
     /**
      * Get the result of vision Line value.
-     * @param obj_info Paramters type
+     * @param object_info Paramters type
      * @param obj_id:  object index
      */
-    //% blockId=Sentry1_get_Line_value block=" Sentry  algorithm Line| %obj_info|| index %obj_id " color="#2E8B57"
+    //% blockId=Sentry1_get_Line_value block=" Sentry  algorithm Line| %object_info|| index %obj_id " color="#2E8B57"
     //% inlineInputMode=inline
     //% expandableArgumentMode="enabled"
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
     //% group="Functions"
-    export function LineValue(obj_info: sentry1_Line_info_e, obj_id: number = 1): number {
-        return pSentry1.GetValue(sentry1_vision_e.kVisionLine, <number>obj_info, obj_id)
+    export function LineValue(object_info: sentry1_Line_info_e, obj_id: number = 1): number {
+        return pSentry1.GetValue(sentry1_vision_e.kVisionLine, <number>object_info, obj_id)
     }
 
     /**
