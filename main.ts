@@ -721,7 +721,7 @@ namespace Sentry1 {
     * @param w ROI weight.
     * @param h ROI height.
     */
-    //% blockId=Sentry1_vision_color_param block=" set Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param %param index %obj_id"
+    //% blockId=Sentry1_vision_color_param block=" set Sentry algorithm Color ROI centre x%x| y%y| weight%w| height%h ||param index %obj_id"
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
@@ -740,7 +740,7 @@ namespace Sentry1 {
     * @param h detecte min height.
     * @param l detecte lable.
     */
-    //% blockId=Sentry1_vision_bold_param block=" set Sentry algorithm Bold min weight%w| height%h| lable%l ||param %param index %obj_id"
+    //% blockId=Sentry1_vision_bold_param block=" set Sentry algorithm Bold min weight%w| height%h| lable%l ||param index %obj_id"
     //% obj_id.min=1 obj_id.max=25 obj_id.defl=1
     //% inlineInputMode=inline
     //% group="AlgorithmSettings" advanced=true
